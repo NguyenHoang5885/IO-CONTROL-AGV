@@ -3,6 +3,7 @@
 #include <__c.IO_part.h>
 #include "__d.LM35.h"
 #include "__e.BNO055.h"
+#include "main.h"
 #include "usbd_ioreq.h"
 #include "__HID_address.h"
 #include "usbd_customhid.h"
@@ -21,7 +22,7 @@ extern uint8_t value ;
 extern uint8_t gate  ;
 
 //TEMP_POWER
-
+extern float Voltage,TEMP;
 //BNO
 extern float heading;
 extern float roll;
@@ -62,7 +63,7 @@ void Read_HID(void){
 		}
 		Update_OUTPUT();
 	}
-	else if (strncmp((char*)buff, "SET OUTPUT CH", 13) == 0) {
+	else if (strncmp((char*)buff, "SET OUTPUT CH", 13) == 0) {//////////////////////////
         for(int i=0; i<strlen(buff); i++){
         	if(buff[i] == 'C' && buff[i+1] == 'H'){
 				gate = buff[i+2] - '0';
@@ -79,12 +80,13 @@ void Read_HID(void){
     }
 
 	//----------------TEMP POWER---------------------------------------------------
-	else if (strcmp((char*)buff, "GET TEMP POWER") == 0) {
-	        sprintf(reply, "TEMP POWER: %.1f\r\n", GET_TEMP_POWER());
+	else if (strcmp((char*)buff, "GET TEMP POWER\r\n") == 0) {
+			GET_TEMP_POWER();
+	        sprintf(reply, "TEMP POWER: %.2f\r\n", TEMP);
 	}
-	else if (strcmp((char*)buff, "GET XYZ") == 0) {
+	else if (strcmp((char*)buff, "GET XYZ\r\n") == 0) {
 		    sprintf(reply, "X: %.2f | Y: %.2f | Z: %.2f\r\n", heading, roll, pitch);
-		}
+	}
 
 	else{
 		sprintf(reply, "NO SUPPORT\r\n");

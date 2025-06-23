@@ -17,7 +17,7 @@ const uint8_t RES_EULER_H_LSB = 0x1A;
 extern float heading;
 extern float roll;
 extern float pitch;
-uint8_t LSB_value[6];
+int8_t LSB_value[6];
 
 void BNO055_Init(void){
 
@@ -50,9 +50,9 @@ void BNO055_Init(void){
 void BNO055_Getvalue(void){
 	HAL_I2C_Mem_Read(&hi2c2, BNO_address, RES_EULER_H_LSB, 1, LSB_value, 6, 500) ;
 
-	int16_t heading_raw = ((uint16_t)LSB_value[1]<<8) | LSB_value[0];
-	int16_t roll_raw    = ((uint16_t)LSB_value[3]<<8) | LSB_value[2];
-	int16_t pitch_raw   = ((uint16_t)LSB_value[5]<<8) | LSB_value[4];
+	int16_t heading_raw = ((int16_t)LSB_value[1]<<8) | LSB_value[0];
+	int16_t roll_raw    = ((int16_t)LSB_value[3]<<8) | LSB_value[2];
+	int16_t pitch_raw   = ((int16_t)LSB_value[5]<<8) | LSB_value[4];
 
 	heading =  (float)heading_raw/16.0f;
 	roll    =  (float)roll_raw   /16.0f;

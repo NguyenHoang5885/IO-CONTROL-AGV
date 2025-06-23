@@ -12,7 +12,6 @@ uint8_t gate  =0;
 //TEMP_POWER
 float Voltage, TEMP;
 
-
 //BNO
 float heading;
 float roll;

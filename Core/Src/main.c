@@ -122,6 +122,7 @@ int main(void)
 	  /* USER CODE BEGIN 3 */
 	  //LTC1857_Getvalue();
 	  BNO055_Getvalue();
+
 	  HAL_Delay(500);
   }
   /* USER CODE END 3 */
