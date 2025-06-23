@@ -151,6 +151,10 @@ void Error_Handler(void);
 #define VCC_OUT_8_GPIO_Port GPIOG
 #define GND_OUT_8_Pin GPIO_PIN_7
 #define GND_OUT_8_GPIO_Port GPIOG
+#define DAC_SDA_Pin GPIO_PIN_9
+#define DAC_SDA_GPIO_Port GPIOC
+#define DAC_SCL_Pin GPIO_PIN_8
+#define DAC_SCL_GPIO_Port GPIOA
 #define VCC_OUT_9_Pin GPIO_PIN_15
 #define VCC_OUT_9_GPIO_Port GPIOA
 #define GND_OUT_9_Pin GPIO_PIN_10

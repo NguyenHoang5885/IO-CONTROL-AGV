@@ -1,6 +1,8 @@
 #include <__a.Receive_transfer.h>
 #include "__b.Var_global.h"
 #include <__c.IO_part.h>
+#include "__d.LM35.h"
+#include "__e.BNO055.h"
 #include "usbd_ioreq.h"
 #include "__HID_address.h"
 #include "usbd_customhid.h"
@@ -19,7 +21,11 @@ extern uint8_t value ;
 extern uint8_t gate  ;
 
 //TEMP_POWER
-extern uint8_t temp_power;
+
+//BNO
+extern float heading;
+extern float roll;
+extern float pitch;
 
 //-------------FUNCTION----------------------
 void Read_HID(void){
@@ -73,13 +79,12 @@ void Read_HID(void){
     }
 
 	//----------------TEMP POWER---------------------------------------------------
-//	else if (strcmp((char*)buff, "GET TEMP POWER") == 0) {
-//	        for(int i=0; i<strlen(buff); i++){
-//
-//
-//	        	}
-//	        sprintf(reply, "TEMP POWER: %d\r\n", temp_power);
-//	        }
+	else if (strcmp((char*)buff, "GET TEMP POWER") == 0) {
+	        sprintf(reply, "TEMP POWER: %.1f\r\n", GET_TEMP_POWER());
+	}
+	else if (strcmp((char*)buff, "GET XYZ") == 0) {
+		    sprintf(reply, "X: %.2f | Y: %.2f | Z: %.2f\r\n", heading, roll, pitch);
+		}
 
 	else{
 		sprintf(reply, "NO SUPPORT\r\n");
