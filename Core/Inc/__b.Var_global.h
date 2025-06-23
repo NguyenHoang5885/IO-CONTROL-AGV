@@ -1,0 +1,17 @@
+#ifndef INC_B_VAR_GLOBAL_H_
+#define INC_B_VAR_GLOBAL_H_
+#include <stdint.h>
+
+//RECEIVE-TRANSFER
+extern uint8_t buff[64];
+extern uint8_t reply[64];
+
+//INPUT_OUTPUT
+extern uint8_t data_input[16];
+extern uint8_t value ;
+extern uint8_t gate  ;
+
+//TEMP_POWER
+extern uint8_t temp_power;
+
+#endif

@@ -1,0 +1,18 @@
+# Bỏ các file/folder build
+Debug/
+Release/
+
+# File của CubeIDE
+.settings/
+.cproject
+.project
+.mxproject
+
+# File của các IDE khác (nếu có)
+.idea/
+.vscode/
+
+# Tệp tạm, log, swap
+*.log
+*.swp
+*~

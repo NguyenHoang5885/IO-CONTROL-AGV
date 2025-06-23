@@ -1,0 +1,13 @@
+#include <__b.Var_global.h>
+
+//RECEIVE - TRANSFER HID
+uint8_t buff[64];
+uint8_t reply[64];
+
+//INPUT_OUTPUT
+uint8_t data_input[16];
+uint8_t value =0;
+uint8_t gate  =0;
+
+//TEMP_POWER
+uint8_t temp_power=0;
