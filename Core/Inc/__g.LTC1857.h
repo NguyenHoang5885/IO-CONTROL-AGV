@@ -7,7 +7,7 @@
 
 #ifndef INC___G_LTC1857_H_
 #define INC___G_LTC1857_H_
-
-
+#include <stdint.h>
+uint16_t LTC1857_Getvalue(void);
 
 #endif /* INC___G_LTC1857_H_ */

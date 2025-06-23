@@ -700,8 +700,6 @@ static uint8_t USBD_CUSTOM_HID_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
   * @param  epnum: endpoint index
   * @retval status
   */
-extern uint8_t buff[64];
-extern uint8_t reply[64];
 static uint8_t USBD_CUSTOM_HID_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
   UNUSED(epnum);
@@ -722,15 +720,7 @@ static uint8_t USBD_CUSTOM_HID_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
 #else
   ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData[pdev->classId])->OutEvent(hhid->Report_buf[0],
                                                                            hhid->Report_buf[1]);
-#endif
-  	  for(int i=0; i<64; i++){
-  		  buff[i] = hhid->Report_buf[i];
-  	  }
-  	Read_HID();
-  	USBD_CUSTOM_HID_SendReport(pdev, reply, 64);
-    USBD_LL_PrepareReceive(pdev, CUSTOM_HID_EPOUT_ADDR, hhid->Report_buf,
-                           USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
-   /* USBD_CUSTOMHID_REPORT_BUFFER_EVENT_ENABLED */
+#endif /* USBD_CUSTOMHID_REPORT_BUFFER_EVENT_ENABLED */
 
   return (uint8_t)USBD_OK;
 }

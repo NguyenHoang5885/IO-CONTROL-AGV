@@ -10,4 +10,10 @@ uint8_t value =0;
 uint8_t gate  =0;
 
 //TEMP_POWER
-uint8_t temp_power=0;
+float Voltage, TEMP;
+
+
+//BNO
+float heading;
+float roll;
+float pitch;

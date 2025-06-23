@@ -12,6 +12,11 @@ extern uint8_t value ;
 extern uint8_t gate  ;
 
 //TEMP_POWER
-extern uint8_t temp_power;
+extern float Voltage, TEMP;
+
+//BNO
+extern float heading;
+extern float roll;
+extern float pitch;
 
 #endif
