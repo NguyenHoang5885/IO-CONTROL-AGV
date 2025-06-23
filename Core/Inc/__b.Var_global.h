@@ -8,8 +8,8 @@ extern uint8_t reply[64];
 
 //INPUT_OUTPUT
 extern uint8_t data_input[16];
-extern uint8_t value ;
-extern uint8_t gate  ;
+extern int value ;
+extern int gate  ;
 
 //TEMP_POWER
 extern float Voltage, TEMP;

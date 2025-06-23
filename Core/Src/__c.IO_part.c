@@ -3,8 +3,8 @@
 #include "main.h"
 
 extern uint8_t data_input[16];
-extern uint8_t value ;
-extern uint8_t gate  ;
+extern int value ;
+extern int gate  ;
 
 typedef struct{
 	const char* name;

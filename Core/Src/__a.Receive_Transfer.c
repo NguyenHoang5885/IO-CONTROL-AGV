@@ -18,8 +18,8 @@ extern uint8_t reply[64];
 
 //INPUT_OUTPUT
 extern uint8_t data_input[16];
-extern uint8_t value ;
-extern uint8_t gate  ;
+extern int value ;
+extern int gate  ;
 
 //TEMP_POWER
 extern float Voltage,TEMP;
@@ -64,19 +64,16 @@ void Read_HID(void){
 		Update_OUTPUT();
 	}
 	else if (strncmp((char*)buff, "SET OUTPUT CH", 13) == 0) {//////////////////////////
-        for(int i=0; i<strlen(buff); i++){
-        	if(buff[i] == 'C' && buff[i+1] == 'H'){
-				gate = buff[i+2] - '0';
-				value= buff[i+4] - '0';
-        	}
-        }
-		if(gate >= 0 && gate <16 && (value == 0 || value == 1 || value == 2)){
-			sprintf(reply, "SET OUTPUT CH%d %d SUCCESS\r\n",gate,value);
+		if(sscanf((char*)buff,"SET OUTPUT CH%d %d\r\n", &gate, &value)==2){
+				if(value == 0 || value == 1 || value == 2){
+					sprintf(reply, "SET OUTPUT CH%d %d SUCCESS\r\n", gate, value);
+				}
+				else{
+					sprintf(reply, "NO SUPPORT\r\n");
+				}
+			}
 			Update_OUTPUT();
-		}
-		else{
-			sprintf(reply, "NO SUPPORT\r\n");
-		}
+
     }
 
 	//----------------TEMP POWER---------------------------------------------------
@@ -84,6 +81,7 @@ void Read_HID(void){
 			GET_TEMP_POWER();
 	        sprintf(reply, "TEMP POWER: %.2f\r\n", TEMP);
 	}
+	//----------------GET BNO VALUE------------------------------------------------
 	else if (strcmp((char*)buff, "GET XYZ\r\n") == 0) {
 		    sprintf(reply, "X: %.2f | Y: %.2f | Z: %.2f\r\n", heading, roll, pitch);
 	}

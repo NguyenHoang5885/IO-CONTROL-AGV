@@ -6,8 +6,8 @@ uint8_t reply[64];
 
 //INPUT_OUTPUT
 uint8_t data_input[16];
-uint8_t value =0;
-uint8_t gate  =0;
+int value =0;
+int gate  =0;
 
 //TEMP_POWER
 float Voltage, TEMP;
