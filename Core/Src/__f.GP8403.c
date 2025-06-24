@@ -6,8 +6,10 @@
 
 extern I2C_HandleTypeDef hi2c3;
 
-//DATA0 = (VOUT / 5.0) * 0xFFF
-//       = (1.65 / 5.0) * 4095 ≈ 1351
+//DATA0 = (VOUT / 5.0) * 0xFFF         // max 5V
+//      = (1.65 / 5.0) * 4095 ≈ 1351
+//DATA0 = (VOUT / 10.0) * 0xFFF        // max 10V
+
 #define Dev_address (0x58<<1)
 uint8_t Res_channel;
 uint8_t Vol[2];
@@ -18,8 +20,9 @@ extern int Volt_DAC;
 
 void GP8403_Init(void){
 	Res_channel = 0x01;
-	uint8_t Vol_1_2 = 0x00; // 0x11 = 10V ; 0x00 = 5V
+	uint8_t Vol_1_2 = 0x11; // 0x11 = 10V ; 0x00 = 5V
 	HAL_I2C_Mem_Write( &hi2c3, Dev_address, Res_channel, 1, Vol_1_2, 1, 100 ); // SET ( DAC1 && DAC2 ) = 10V
+
 }
 
 void GP8403_Set(int COM_DAC, int VOLT_DAC){

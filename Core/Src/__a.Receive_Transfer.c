@@ -92,9 +92,9 @@ void Read_HID(void){
 	//----------------SET ADC------------------------------------------------------
 
 	else if (strncmp((char*)buff, "SET DAC CH",10) == 0) {
-		if(sscanf((char*)buff,"SET DAC CH%d %d\r\n", &Com_DAC, &Volt_DAC)==2){
+		if(sscanf((char*)buff,"SET DAC CH%d %dV\r\n", &Com_DAC, &Volt_DAC)==2){
 			GP8403_Set(Com_DAC, Volt_DAC);
-			sprintf(reply, "SET DAC CH%d %d SUCCESS\r\n", Com_DAC, Volt_DAC);
+			sprintf(reply, "SET DAC CH%d %d Volt SUCCESS\r\n", Com_DAC, Volt_DAC);
 		}
 	}
 	else{
