@@ -27,21 +27,27 @@ void GP8403_Init(void){
 void GP8403_Set(int COM_DAC, int VOLT_DAC){
 
 	uint16_t Vol = (uint16_t)((float)VOLT_DAC / 10.0f * 4095.0f);
-	uint8_t data_Vol[2];
+	uint8_t data_Vol[4];
 
-	//  VD: 3333 2222 1111 => data[2] = 1111 0000, 3333 2222
-	if(COM_DAC == 1) {
+	// Registor_GP8403 = START | DEVICE_ADDR_W | REGISTER_ADDR | DATA_LOW (D3–D0 << 4) | DATA_HIGH (D11–D4) | STOP
+	// VD_Data: 3333 2222 1111 => data[2] = 1111 0000, 3333 2222
+
+	if(COM_DAC == 0) {
 		data_Vol[0] = (Vol & 0x0F)<<4;
 		data_Vol[1] = (Vol >> 4) & 0xFF;
-		HAL_I2C_Mem_Write(&hi2c3, Dev_address, 0x02, 1, data_Vol, 2, 100); // Gửi cho DAC1
+		HAL_I2C_Mem_Write(&hi2c3, Dev_address, 0x02, 1, data_Vol, 2, 100);
 	}
-	else if(COM_DAC == 2) {
-		data_Vol[0] = Vol & 0x0F;
+	else if(COM_DAC == 1) {
+		data_Vol[0] = (Vol & 0x0F)<<4;
 		data_Vol[1] = (Vol >> 4) & 0xFF;
-	    HAL_I2C_Mem_Write(&hi2c3, Dev_address, 0x04, 1, data_Vol, 2, 100); // Gửi cho DAC2
+	    HAL_I2C_Mem_Write(&hi2c3, Dev_address, 0x04, 1, data_Vol, 2, 100);
 	}
 
-//	else{
-//	...................
-//	}
+	else if(COM_DAC == 2) {
+		data_Vol[0] = (Vol & 0x0F)<<4;
+		data_Vol[1] = (Vol >> 4) & 0xFF;
+		data_Vol[2] = (Vol & 0x0F)<<4;
+		data_Vol[3] = (Vol >> 4) & 0xFF;
+		HAL_I2C_Mem_Write(&hi2c3, Dev_address, 0x02, 1, data_Vol, 4, 100);
+	}
 }

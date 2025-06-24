@@ -22,15 +22,15 @@ extern int     value ;
 extern int     gate  ;
 
 //TEMP_POWER
-extern float Voltage,TEMP;
+extern float   Voltage,TEMP;
 //BNO
-extern float heading;
-extern float roll;
-extern float pitch;
+extern float   heading;
+extern float   roll;
+extern float   pitch;
 
 //DAC
-extern int Com_DAC;
-extern int Volt_DAC;
+extern int     Com_DAC;
+extern int     Volt_DAC;
 
 
 //-------------FUNCTION----------------------
@@ -85,18 +85,38 @@ void Read_HID(void){
 			GET_TEMP_POWER();
 	        sprintf(reply, "TEMP POWER: %.2f\r\n", TEMP);
 	}
+
 	//----------------GET BNO VALUE------------------------------------------------
 	else if (strcmp((char*)buff, "GET XYZ\r\n") == 0) {
 		    sprintf(reply, "X: %.2f | Y: %.2f | Z: %.2f\r\n", heading, roll, pitch);
 	}
-	//----------------SET ADC------------------------------------------------------
 
+	//----------------SET DAC------------------------------------------------------
+	else if (strncmp((char*)buff, "SET DAC ALL",11) == 0) {
+			if(sscanf((char*)buff,"SET DAC ALL %dV\r\n", &Volt_DAC)==1){
+				if(Volt_DAC > 0 && Volt_DAC<10){
+					Com_DAC=2;
+					GP8403_Set(Com_DAC, Volt_DAC);
+					sprintf(reply, "SET DAC ALL %d Volt SUCCESS\r\n", Volt_DAC);
+				}
+				else{
+					sprintf(reply, "NO SUPPORT\r\n");
+				}
+			}
+		}
 	else if (strncmp((char*)buff, "SET DAC CH",10) == 0) {
 		if(sscanf((char*)buff,"SET DAC CH%d %dV\r\n", &Com_DAC, &Volt_DAC)==2){
-			GP8403_Set(Com_DAC, Volt_DAC);
-			sprintf(reply, "SET DAC CH%d %d Volt SUCCESS\r\n", Com_DAC, Volt_DAC);
+			if((Com_DAC == 0 ||  Com_DAC == 1) && (Volt_DAC > 0 && Volt_DAC<10)){
+				GP8403_Set(Com_DAC, Volt_DAC);
+				sprintf(reply, "SET DAC CH%d %d Volt SUCCESS\r\n", Com_DAC, Volt_DAC);
+			}
+			else{
+				sprintf(reply, "NO SUPPORT\r\n");
+			}
 		}
 	}
+
+	//----------------READ ADC------------------------------------------------------
 	else{
 		sprintf(reply, "NO SUPPORT\r\n");
 	}
