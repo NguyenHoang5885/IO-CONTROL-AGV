@@ -3,13 +3,13 @@
 #include "main.h"
 
 extern uint8_t data_input[16];
-extern int value ;
-extern int gate  ;
+extern int     value ;
+extern int     gate  ;
 
 typedef struct{
-	const char* name;
-	GPIO_TypeDef *port;
-	uint16_t pin;
+	const char*   name;
+	GPIO_TypeDef* port;
+	uint16_t      pin;
 }GPIO;
 
 GPIO GPIO_INPUT[16] = {

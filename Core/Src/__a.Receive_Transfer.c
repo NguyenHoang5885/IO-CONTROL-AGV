@@ -1,8 +1,10 @@
-#include <__a.Receive_transfer.h>
+#include "__a.Receive_transfer.h"
 #include "__b.Var_global.h"
-#include <__c.IO_part.h>
+#include "__c.IO_part.h"
 #include "__d.LM35.h"
 #include "__e.BNO055.h"
+#include "__f.GP8403.h"
+#include "__g.LTC1857.h"
 #include "main.h"
 #include "usbd_ioreq.h"
 #include "__HID_address.h"
@@ -13,25 +15,24 @@
 
 //------------VALUE--------------------------
 //RECEIVE-TRANSFER
-extern uint8_t buff[64];
-extern uint8_t reply[64];
+extern uint8_t  buff[64];
+extern uint8_t  reply[64];
 
 //INPUT_OUTPUT
-extern uint8_t data_input[16];
-extern int     value ;
-extern int     gate  ;
+extern uint8_t  data_input[16];
+extern int      value ;
+extern int      gate  ;
 
 //TEMP_POWER
-extern float   Voltage,TEMP;
+extern float    Voltage,TEMP;
 //BNO
-extern float   heading;
-extern float   roll;
-extern float   pitch;
+extern float    heading;
+extern float    roll;
+extern float    pitch;
 
 //DAC
-extern int     Com_DAC;
-extern int     Volt_DAC;
-
+extern int      Com_DAC;
+extern int      Volt_DAC;
 
 //-------------FUNCTION----------------------
 void Read_HID(void){
@@ -117,6 +118,15 @@ void Read_HID(void){
 	}
 
 	//----------------READ ADC------------------------------------------------------
+	else if (strncmp((char*)buff, "GET ADC",7) == 0) {
+
+		LTC1857_Getvalue();
+	//	sprintf(reply, "SET DAC CH%d %d Volt SUCCESS\r\n", );
+		sprintf(reply, "Hi\r\n");
+	}
+
+
+	//------------------------------------------------------------------------------
 	else{
 		sprintf(reply, "NO SUPPORT\r\n");
 	}

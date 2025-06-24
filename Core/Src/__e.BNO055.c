@@ -14,10 +14,10 @@ const uint8_t RES_UNIT_SEL = 0x3B;
 const uint8_t RES_CHIP_ID     = 0X00;
 const uint8_t RES_EULER_H_LSB = 0x1A;
 //
-extern float heading;
-extern float roll;
-extern float pitch;
-int8_t LSB_value[6];
+extern float  heading;
+extern float  roll;
+extern float  pitch;
+int8_t        LSB_value[6];
 
 void BNO055_Init(void){
 

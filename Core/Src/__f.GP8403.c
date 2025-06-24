@@ -6,8 +6,8 @@
 
 extern I2C_HandleTypeDef hi2c3;
 
-//DATA0 = (VOUT / 5.0) * 0xFFF         // max 5V
-//      = (1.65 / 5.0) * 4095 ≈ 1351
+//DATA0 = (VOUT / 5.0)  * 0xFFF         // max 5V
+//      = (1.65 / 5.0)  * 4095 ≈ 1351
 //DATA0 = (VOUT / 10.0) * 0xFFF        // max 10V
 
 #define Dev_address (0x58<<1)

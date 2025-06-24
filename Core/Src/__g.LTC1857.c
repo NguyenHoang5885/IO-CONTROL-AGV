@@ -6,21 +6,29 @@ extern SPI_HandleTypeDef hspi1;
 uint8_t LTC_CH0 = 0x88;
 uint8_t LTC_CH5 = 0xAC;
 uint8_t ADC_Recv[2];
+int dem=0;
+void LTC1857_Getvalue(void){
 
-uint16_t LTC1857_Getvalue(void){
+	 // 1. Chu kỳ đầu tiên: gửi lệnh CHx
+	    HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_RESET);
+	    HAL_SPI_Transmit(&hspi1, &LTC_CH0, 1, 100);
+	    HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_SET);
 
-	HAL_SPI_Transmit(&hspi1, &LTC_CH0, 1, 100);
-	//HAL_SPI_Transmit(&hspi1, &LTC_CH5, 1, 100);
+	    // 2. Tạo xung CONVERT
+	    HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_SET);
+	    for(volatile int i = 0; i < 1000; i++); // delay ngắn
+	    HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_RESET);
 
-	HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_SET);
-	HAL_Delay(2);
-	HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_RESET);
+	    // 3. Đợi BUSY xong
+	    while (HAL_GPIO_ReadPin(ADC_BUSY_GPIO_Port, ADC_BUSY_Pin) == GPIO_PIN_RESET);
 
-	while(HAL_GPIO_ReadPin(ADC_BUSY_GPIO_Port, ADC_BUSY_Pin) == GPIO_PIN_SET);
-	HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_RESET);
+	    // 4. Chu kỳ thứ 2: gửi lệnh lại (hoặc lệnh kênh tiếp theo)
+	    HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_RESET);
+	    HAL_SPI_TransmitReceive(&hspi1, &LTC_CH0, ADC_Recv, 2, 100);
+	    HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_SET);
 
-	HAL_SPI_Receive(&hspi1, ADC_Recv, 2, 100);
-	return (ADC_Recv[0]<<8) | ADC_Recv[1];
+
+	//return (ADC_Recv[0]<<8) | ADC_Recv[1];
 }
 //#define ADC_SPI_CS_Pin GPIO_PIN_4
 //#define ADC_SPI_CS_GPIO_Port GPIOA
