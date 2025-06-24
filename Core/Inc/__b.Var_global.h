@@ -19,4 +19,8 @@ extern float heading;
 extern float roll;
 extern float pitch;
 
+
+//DAC
+extern int Com_DAC;
+extern int Volt_DAC;
 #endif

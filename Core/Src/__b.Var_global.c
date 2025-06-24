@@ -16,3 +16,6 @@ float Voltage, TEMP;
 float heading;
 float roll;
 float pitch;
+//DAC
+int Com_DAC;
+int Volt_DAC;
