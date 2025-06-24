@@ -21,17 +21,17 @@ extern int Volt_DAC;
 void GP8403_Init(void){
 	Res_channel = 0x01;
 	uint8_t Vol_1_2 = 0x11; // 0x11 = 10V ; 0x00 = 5V
-	HAL_I2C_Mem_Write( &hi2c3, Dev_address, Res_channel, 1, Vol_1_2, 1, 100 ); // SET ( DAC1 && DAC2 ) = 10V
-
+	HAL_I2C_Mem_Write( &hi2c3, Dev_address, Res_channel, 1, &Vol_1_2, 1, 100 ); // SET ( DAC1 && DAC2 ) = 10V
 }
 
 void GP8403_Set(int COM_DAC, int VOLT_DAC){
 
-	uint16_t Vol = (VOLT_DAC / 5.0) * 4095;
+	uint16_t Vol = (uint16_t)((float)VOLT_DAC / 10.0f * 4095.0f);
 	uint8_t data_Vol[2];
 
+	//  VD: 3333 2222 1111 => data[2] = 1111 0000, 3333 2222
 	if(COM_DAC == 1) {
-		data_Vol[0] = Vol & 0x0F;
+		data_Vol[0] = (Vol & 0x0F)<<4;
 		data_Vol[1] = (Vol >> 4) & 0xFF;
 		HAL_I2C_Mem_Write(&hi2c3, Dev_address, 0x02, 1, data_Vol, 2, 100); // Gửi cho DAC1
 	}
