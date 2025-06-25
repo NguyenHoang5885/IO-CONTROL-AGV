@@ -3,6 +3,7 @@
 #include <__c.IO_part.h>
 #include "__b.Var_global.h"
 #include "__e.BNO055.h"
+#include "__g.LTC1857.h"
 #include "main.h"
 #include "usb_device.h"
 #include "__HID_address.h"
@@ -92,6 +93,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   GP8403_Init();
   BNO055_Init();
+  //LTC1857_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */

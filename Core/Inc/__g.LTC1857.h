@@ -8,6 +8,8 @@
 #ifndef INC___G_LTC1857_H_
 #define INC___G_LTC1857_H_
 #include <stdint.h>
-void LTC1857_Getvalue(void);
+
+void LTC1857_Init();
+float LTC1857_Getvalue(void);
 
 #endif /* INC___G_LTC1857_H_ */

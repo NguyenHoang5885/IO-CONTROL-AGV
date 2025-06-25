@@ -3,33 +3,35 @@
 
 extern SPI_HandleTypeDef hspi1;
 
-uint8_t LTC_CH0 = 0x88;
-uint8_t LTC_CH5 = 0xAC;
-uint8_t ADC_Recv[2];
-int dem=0;
-void LTC1857_Getvalue(void){
+uint8_t LTC_CH0[2] = {0x8C, 0x00};  // 10001100 00000000
+uint8_t LTC_CH5[2] = {0xEC, 0x00};  // 11011100 00000000
+uint8_t ADC_Recv_Raw[2];
+uint16_t ADC_Recv,voltage;
 
-	 // 1. Chu kỳ đầu tiên: gửi lệnh CHx
-	    HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_RESET);
-	    HAL_SPI_Transmit(&hspi1, &LTC_CH0, 1, 100);
-	    HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_SET);
+void LTC1857_Init(){
 
-	    // 2. Tạo xung CONVERT
-	    HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_SET);
-	    for(volatile int i = 0; i < 1000; i++); // delay ngắn
-	    HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_RESET);
-
-	    // 3. Đợi BUSY xong
-	    while (HAL_GPIO_ReadPin(ADC_BUSY_GPIO_Port, ADC_BUSY_Pin) == GPIO_PIN_RESET);
-
-	    // 4. Chu kỳ thứ 2: gửi lệnh lại (hoặc lệnh kênh tiếp theo)
-	    HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_RESET);
-	    HAL_SPI_TransmitReceive(&hspi1, &LTC_CH0, ADC_Recv, 2, 100);
-	    HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_SET);
-
-
-	//return (ADC_Recv[0]<<8) | ADC_Recv[1];
 }
+
+float LTC1857_Getvalue(void){
+	HAL_GPIO_WritePin(ADC_SPI_CS_GPIO_Port, ADC_SPI_CS_Pin, GPIO_PIN_RESET);
+
+	HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_RESET);
+	while (HAL_GPIO_ReadPin(ADC_BUSY_GPIO_Port, ADC_BUSY_Pin) == GPIO_PIN_RESET);
+	HAL_SPI_TransmitReceive(&hspi1, LTC_CH5, ADC_Recv_Raw, 2, 100);
+
+
+	HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(ADC_CONVERT_GPIO_Port, ADC_CONVERT_Pin, GPIO_PIN_RESET);
+	while (HAL_GPIO_ReadPin(ADC_BUSY_GPIO_Port, ADC_BUSY_Pin) == GPIO_PIN_RESET);
+	HAL_SPI_TransmitReceive(&hspi1, LTC_CH5, ADC_Recv_Raw, 2, 100);
+
+	ADC_Recv = (ADC_Recv_Raw[0] << 8) | ADC_Recv_Raw[1];
+	ADC_Recv >>= 4;
+	voltage  = ( ADC_Recv * 10000 ) / 4095;
+	return voltage/1000;
+}
+
 //#define ADC_SPI_CS_Pin GPIO_PIN_4
 //#define ADC_SPI_CS_GPIO_Port GPIOA
 //#define ADC_SPI_SCK_Pin GPIO_PIN_5

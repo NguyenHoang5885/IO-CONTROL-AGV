@@ -12,7 +12,7 @@ extern I2C_HandleTypeDef hi2c3;
 
 #define Dev_address (0x58<<1)
 uint8_t Res_channel;
-uint8_t Vol[2];
+//uint8_t Vol[2];
 
 //DAC
 extern int Com_DAC;
