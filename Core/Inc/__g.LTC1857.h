@@ -10,6 +10,6 @@
 #include <stdint.h>
 
 void LTC1857_Init();
-float LTC1857_Getvalue(void);
+uint16_t LTC1857_Getvalue(void);
 
 #endif /* INC___G_LTC1857_H_ */

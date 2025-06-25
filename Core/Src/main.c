@@ -93,7 +93,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   GP8403_Init();
   BNO055_Init();
-  //LTC1857_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */

@@ -120,9 +120,9 @@ void Read_HID(void){
 	//----------------READ ADC------------------------------------------------------
 	else if (strncmp((char*)buff, "GET ADC",7) == 0) {
 
-		LTC1857_Getvalue();
+		//LTC1857_Getvalue();
 	//	sprintf(reply, "SET DAC CH%d %d Volt SUCCESS\r\n", );
-		sprintf(reply, "Hi\r\n");
+		sprintf(reply, "ADC : %d\r\n", LTC1857_Getvalue());
 	}
 
 
