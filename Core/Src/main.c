@@ -26,7 +26,7 @@ static void MX_SPI1_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_I2C3_Init(void);
 static void MX_TIM3_Init(void);
-
+int datasentflag=0;
 int main(void)
 {
   HAL_Init();
@@ -64,6 +64,11 @@ int main(void)
   * @brief System Clock Configuration
   * @retval None
   */
+void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
+{
+	HAL_TIM_PWM_Stop_DMA(&htim3, TIM_CHANNEL_2);
+	datasentflag=1;
+}
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};

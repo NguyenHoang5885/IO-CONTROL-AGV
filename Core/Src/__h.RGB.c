@@ -1,7 +1,7 @@
 #include "__h.RGB.h"
 #include <stdint.h>
 #include "main.h"
-
+extern TIM_HandleTypeDef htim3;
 extern DMA_HandleTypeDef hdma_tim3_ch2;
 #define Led_max 12
 
@@ -43,8 +43,8 @@ void Convert_PWM(){
 	for(int i = 0; i < Led_max; i++){
 		Led_data[i] = ((uint32_t)Led_Array[i].G << 16) | ((uint32_t)Led_Array[i].R << 8) | (uint32_t)Led_Array[i].B;
 
-		for(int i=23; i>=0; i--){
-			if(Led_data[i] & (1 << 23) != 0){
+		for(int j=23; j>=0; j--){
+			if(Led_data[i] & (1 << j) != 0){
 				PWM_data[count] = 60;
 			}
 			else{
