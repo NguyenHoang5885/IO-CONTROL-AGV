@@ -1,0 +1,1 @@
+The device receives USB signals via HID Terminal to control digital inputs and outputs, export analog voltages using the GP8403 DAC, and read analog values from the LTC1857 ADC. It utilizes the BNO055 sensor to monitor vibrations from the vehicle system and integrates an RGB LED to indicate emergency states.
